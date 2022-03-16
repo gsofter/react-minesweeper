@@ -93,7 +93,6 @@ const StyledButton = styled("div")`
     font-size: 12px;
     margin-left: 2px;
   }
-
   &.value-1 {
     color: blue;
   }
