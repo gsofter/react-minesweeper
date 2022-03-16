@@ -4,7 +4,7 @@ import Button from "./components/Button";
 import NumberDisplay from "./components/NumberDisplay";
 import { generateCells, openMultipleCells } from "./utils";
 import { Cell, CellState, CellValue, Face } from "./types";
-import { MAX_COLS, MAX_ROWS } from "./constants";
+import { MAX_COLS, MAX_ROWS, BOMBS_COUNT } from "./constants";
 import { AppThemeProvider } from "./theme";
 
 const App: React.FC = () => {
@@ -61,6 +61,10 @@ const App: React.FC = () => {
   }, [hasWon]);
 
   const handleCellClick = (rowParam: number, colParam: number) => (): void => {
+    if (hasLost) {
+      alert("You are lost! Restart game again!");
+      return;
+    }
     let newCells = cells.slice();
 
     // start the game
@@ -157,6 +161,7 @@ const App: React.FC = () => {
     setLive(false);
     setTime(0);
     setCells(generateCells());
+    setBombCounter(BOMBS_COUNT);
     setHasLost(false);
     setHasWon(false);
   };

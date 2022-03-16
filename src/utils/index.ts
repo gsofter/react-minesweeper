@@ -1,4 +1,4 @@
-import { MAX_COLS, MAX_ROWS, NO_OF_BOMBS } from "../constants";
+import { MAX_COLS, MAX_ROWS, BOMBS_COUNT } from "../constants";
 import { Cell, CellState, CellValue } from "../types";
 
 const grabAllAdjacentCells = (
@@ -64,7 +64,7 @@ export const generateCells = (): Cell[][] => {
 
   // randomly put 10 bombs
   let bombsPlaced = 0;
-  while (bombsPlaced < NO_OF_BOMBS) {
+  while (bombsPlaced < BOMBS_COUNT) {
     const randomRow = Math.floor(Math.random() * MAX_ROWS);
     const randomCol = Math.floor(Math.random() * MAX_COLS);
 
