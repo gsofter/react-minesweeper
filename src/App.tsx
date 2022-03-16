@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-
 import Button from "./components/Button";
 import NumberDisplay from "./components/NumberDisplay";
 import { generateCells, openMultipleCells } from "./utils";
 import { Cell, CellState, CellValue, Face } from "./types";
 import { MAX_COLS, MAX_ROWS } from "./constants";
+import { AppThemeProvider } from "./theme";
 
 const App: React.FC = () => {
   const [cells, setCells] = useState<Cell[][]>(generateCells());
@@ -194,18 +194,20 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <div className="Header">
-        <NumberDisplay value={bombCounter} />
-        <div className="Face" onClick={handleFaceClick}>
-          <span role="img" aria-label="face">
-            {face}
-          </span>
+    <AppThemeProvider>
+      <div className="App">
+        <div className="Header">
+          <NumberDisplay value={bombCounter} />
+          <div className="Face" onClick={handleFaceClick}>
+            <span role="img" aria-label="face">
+              {face}
+            </span>
+          </div>
+          <NumberDisplay value={time} />
         </div>
-        <NumberDisplay value={time} />
+        <div className="Body">{renderCells()}</div>
       </div>
-      <div className="Body">{renderCells()}</div>
-    </div>
+    </AppThemeProvider>
   );
 };
 
