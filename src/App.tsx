@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { styled } from "@mui/material/styles";
 import Button from "./components/Button";
 import NumberDisplay from "./components/NumberDisplay";
 import { generateCells, openMultipleCells } from "./utils";
@@ -196,19 +197,63 @@ const App: React.FC = () => {
   return (
     <AppThemeProvider>
       <div className="App">
-        <div className="Header">
+        <HeaderContainer className="Header">
           <NumberDisplay value={bombCounter} />
-          <div className="Face" onClick={handleFaceClick}>
+          <FaceContaiiner className="Face" onClick={handleFaceClick}>
             <span role="img" aria-label="face">
               {face}
             </span>
-          </div>
+          </FaceContaiiner>
           <NumberDisplay value={time} />
-        </div>
-        <div className="Body">{renderCells()}</div>
+        </HeaderContainer>
+        <BodyContainer className="Body">{renderCells()}</BodyContainer>
       </div>
     </AppThemeProvider>
   );
 };
 
+const HeaderContainer = styled("div")`
+  border-bottom-color: #7b7b7b;
+  border-left-color: white;
+  border-right-color: #7b7b7b;
+  border-style: solid;
+  border-top-color: white;
+  border-width: 4px;
+
+  align-items: center;
+  background: #c0c0c0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+`;
+
+const FaceContaiiner = styled("div")`
+  border-bottom-color: #7b7b7b;
+  border-left-color: white;
+  border-right-color: #7b7b7b;
+  border-style: solid;
+  border-top-color: white;
+  border-width: 4px;
+
+  &:active {
+    border-bottom-color: white;
+    border-left-color: #7b7b7b;
+    border-right-color: white;
+    border-top-color: #7b7b7b;
+  }
+`;
+
+const BodyContainer = styled("div")`
+  border-bottom-color: #7b7b7b;
+  border-left-color: white;
+  border-right-color: #7b7b7b;
+  border-style: solid;
+  border-top-color: white;
+  border-width: 4px;
+
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  margin-top: 16px;
+`;
 export default App;
