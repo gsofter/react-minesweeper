@@ -1,15 +1,10 @@
 import React from "react";
-import { createTheme, ThemeProvider } from "@mui/system";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const customTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2",
-      contrastText: "white",
-    },
-  },
-});
+const theme = createTheme();
 
-export const AppThemeProvider: React.FC = ({ children }) => {
-  return <ThemeProvider theme={customTheme}> {children} </ThemeProvider>;
+const AppThemeProvider: React.FC = ({ children }) => {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
+
+export default AppThemeProvider;

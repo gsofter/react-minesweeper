@@ -1,36 +1,44 @@
-import { createAction, handleActions } from "redux-actions";
-export const LOGIN_START = "LOGIN_START";
-export const LOGIN_REQUEST = "LOGIN_REQUESET";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILED = "LOGIN_FAILED";
-export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export const loginStart = createAction(LOGIN_START);
-export const loginSuccess = createAction(LOGIN_SUCCESS);
-export const loginFailed = createAction(LOGIN_FAILED);
-export const loginRequest = createAction(LOGIN_REQUEST);
-export const logoutRequest = createAction(LOGOUT_REQUEST);
-const initState = {
-  isAuth: false,
-  isError: false,
-  isChecking: false,
+export interface GameState {
+  cells: string[][];
+  gameStarted: boolean;
+  rowCount: number;
+  colCount: number;
+}
+
+const initialState: GameState = {
+  cells: [],
+  gameStarted: false,
+  rowCount: 10,
+  colCount: 10,
 };
 
-const rootReducer = handleActions(
-  {
-    [LOGIN_START]: (state: any) => ({ ...state, isChecking: true }),
-    [LOGIN_SUCCESS]: (state: any, action: any) => ({
-      isAuth: true,
-      isError: false,
-      isChecking: false,
-    }),
-    [LOGIN_FAILED]: (state: any, action: any) => ({
-      isAuth: false,
-      isError: true,
-      isChecking: false,
-    }),
-    [LOGOUT_REQUEST]: (state: any, action: any) => initState,
+const generateCells = () => {
+  const cells: string[][] = [];
+
+  for (let row = 0; row < 10; row++) {
+    cells.push([]);
+    for (let col = 0; col < 10; col++) {
+      cells[row].push("□");
+    }
+  }
+  return cells;
+};
+
+export const gameSlice = createSlice({
+  name: "game",
+  initialState,
+  reducers: {
+    startGame: (state) => {
+      console.log("startGame");
+      state.gameStarted = true;
+      state.cells = generateCells();
+    },
   },
-  initState
-);
-export default rootReducer;
+});
+
+// Action creators are generated for each case reducer function
+export const { startGame } = gameSlice.actions;
+
+export default gameSlice.reducer;
