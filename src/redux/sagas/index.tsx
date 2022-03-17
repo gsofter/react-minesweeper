@@ -54,7 +54,7 @@ function createSocketChannel(ws: WebSocket) {
       }
     };
 
-    ws.onclose = (event) => {
+    ws.onclose = () => {
       emit({
         type: SocketMessageResponseType.DISCONNECTED,
       });
