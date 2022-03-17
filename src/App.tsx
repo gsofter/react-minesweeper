@@ -27,7 +27,9 @@ const App: React.FC = () => {
   const gameStatus = useSelector((state: RootState) => state.gameStatus);
 
   const cellClicked = (rowId: number, colId: number) => {
-    WS.send(`open ${colId} ${rowId}`);
+    if (gameStatus === GameStatusType.PLAYING)
+      WS.send(`open ${colId} ${rowId}`);
+    else alert("Start new game");
   };
 
   const renderCells = () => {
