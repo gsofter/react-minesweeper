@@ -30,6 +30,8 @@ const CellButton: React.FC<ICellButtonProps> = ({ cellValue, cellClicked }) => {
     return null;
   };
 
+  const isBombButton = () => cellValue === CELL_BOMB;
+
   return (
     <Button
       variant={buttonType}
@@ -39,6 +41,7 @@ const CellButton: React.FC<ICellButtonProps> = ({ cellValue, cellClicked }) => {
         width: "50px",
         height: "50px",
         border: `1px solid rgba(0, 0, 0, .1)`,
+        backgroundColor: isBombButton() ? "red" : "default",
       }}
       onClick={cellClicked}
     >

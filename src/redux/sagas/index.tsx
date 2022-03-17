@@ -86,7 +86,11 @@ function* websocketSaga(webSocket: WebSocket) {
         yield put(actions.startGame());
         webSocket.send("map");
       } else if (payload.type === SocketMessageResponseType.CELL_OPEN) {
-        webSocket.send("map");
+        if (payload.data === "OK") webSocket.send("map");
+        else {
+          webSocket.send("map");
+          yield put(actions.finishGame(false));
+        }
       } else if (payload.type === SocketMessageResponseType.MAP_RECEIVED) {
         const cells = parseMapString(payload.data);
         yield put(actions.setCells(cells));

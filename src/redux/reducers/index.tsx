@@ -1,15 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export enum GameStatusType {
+  NOT_STARTED,
+  PLAYING,
+  FINISHED,
+}
+
 export interface GameState {
   cells: string[][];
-  gameStarted: boolean;
+  gameStatus: GameStatusType;
   socketReady: boolean;
+  hasWon: boolean;
 }
 
 const initialState: GameState = {
   cells: [],
-  gameStarted: false,
+  gameStatus: GameStatusType.NOT_STARTED,
   socketReady: false,
+  hasWon: false,
 };
 
 export const gameSlice = createSlice({
@@ -24,17 +32,26 @@ export const gameSlice = createSlice({
       state.cells = [];
     },
     startGame: (state) => {
-      state.gameStarted = true;
+      state.gameStatus = GameStatusType.PLAYING;
+      state.hasWon = false;
+    },
+    finishGame: (state, { payload }) => {
+      state.gameStatus = GameStatusType.FINISHED;
+      state.hasWon = payload;
     },
     setCells: (state, { payload }) => {
-      console.log(payload);
       state.cells = payload;
     },
   },
 });
 
 // Action creators are generate for each case reducer function
-export const { startGame, socketConnected, setCells, socketDisconnected } =
-  gameSlice.actions;
+export const {
+  startGame,
+  socketConnected,
+  setCells,
+  socketDisconnected,
+  finishGame,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;

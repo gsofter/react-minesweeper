@@ -8,6 +8,7 @@ import {
   Typography,
   Toolbar,
   Container,
+  Alert,
 } from "@mui/material";
 
 import CellButton from "./components/CellButton";
@@ -15,16 +16,18 @@ import { WS } from "./utils/webSocket";
 
 import { RootState } from "./redux/store";
 import AppThemeProvider from "./theme";
+import { GameStatusType } from "./redux/reducers";
 
 const App: React.FC = () => {
   const cells: string[][] = useSelector((state: RootState) => state.cells);
   const socketReady: boolean = useSelector(
     (state: RootState) => state.socketReady
   );
+  const hasWon: boolean = useSelector((state: RootState) => state.hasWon);
+  const gameStatus = useSelector((state: RootState) => state.gameStatus);
 
   const cellClicked = (rowId: number, colId: number) => {
-    console.log("cellClicked");
-    WS.send(`open ${rowId} ${colId}`);
+    WS.send(`open ${colId} ${rowId}`);
   };
 
   const renderCells = () => {
@@ -51,6 +54,18 @@ const App: React.FC = () => {
     else alert("Websocket Connection Not Ready!");
   };
 
+  const renderAlert = () => {
+    if (gameStatus === GameStatusType.FINISHED) {
+      return hasWon ? (
+        <Alert severity="success"> Congratulations! You won! </Alert>
+      ) : (
+        <Alert severity="error"> You losed! </Alert>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <AppThemeProvider>
       <CssBaseline />
@@ -65,7 +80,7 @@ const App: React.FC = () => {
       >
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Company name
+            Minesweeper - POC of LiveArt
           </Typography>
         </Toolbar>
       </AppBar>
@@ -73,6 +88,7 @@ const App: React.FC = () => {
         <Button variant="contained" onClick={() => handleStartGame()}>
           Start game
         </Button>
+        {renderAlert()}
         <Paper sx={{ mt: "50px", width: "fit-content", height: "100%" }}>
           {renderCells()}
         </Paper>
