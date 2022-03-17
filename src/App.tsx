@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Button,
   AppBar,
@@ -15,23 +15,16 @@ import { WS } from "./utils/webSocket";
 
 import { RootState } from "./redux/store";
 import AppThemeProvider from "./theme";
-import * as actions from "./redux/reducers";
 
 const App: React.FC = () => {
   const cells: string[][] = useSelector((state: RootState) => state.cells);
   const socketReady: boolean = useSelector(
     (state: RootState) => state.socketReady
   );
-  const dispatch = useDispatch();
 
   const cellClicked = (rowId: number, colId: number) => {
-    dispatch({
-      type: actions.CELL_OPEN_REQUEST,
-      payload: {
-        rowId,
-        colId,
-      },
-    });
+    console.log("cellClicked");
+    WS.send(`open ${rowId} ${colId}`);
   };
 
   const renderCells = () => {

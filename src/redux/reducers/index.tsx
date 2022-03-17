@@ -1,31 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface GameState {
   cells: string[][];
   gameStarted: boolean;
-  rowCount: number;
-  colCount: number;
   socketReady: boolean;
 }
 
 const initialState: GameState = {
   cells: [],
   gameStarted: false,
-  rowCount: 10,
-  colCount: 10,
   socketReady: false,
-};
-
-const generateCells = () => {
-  const cells: string[][] = [];
-
-  for (let row = 0; row < 10; row++) {
-    cells.push([]);
-    for (let col = 0; col < 10; col++) {
-      cells[row].push("□");
-    }
-  }
-  return cells;
 };
 
 export const gameSlice = createSlice({
@@ -35,18 +19,22 @@ export const gameSlice = createSlice({
     socketConnected: (state) => {
       state.socketReady = true;
     },
+    socketDisconnected: (state) => {
+      state.socketReady = true;
+      state.cells = [];
+    },
     startGame: (state) => {
-      console.log("startGame");
       state.gameStarted = true;
-      state.cells = generateCells();
+    },
+    setCells: (state, { payload }) => {
+      console.log(payload);
+      state.cells = payload;
     },
   },
 });
 
 // Action creators are generate for each case reducer function
-export const { startGame, socketConnected } = gameSlice.actions;
-
-export const GAME_START_REQUEST = "GAME_START_REQUEST";
-export const CELL_OPEN_REQUEST = "CELL_OPEN_REQUEST";
+export const { startGame, socketConnected, setCells, socketDisconnected } =
+  gameSlice.actions;
 
 export default gameSlice.reducer;
