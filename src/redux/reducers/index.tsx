@@ -41,4 +41,7 @@ export const gameSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { startGame } = gameSlice.actions;
 
+export const GAME_START_REQUEST = "GAME_START_REQUEST";
+export const CELL_OPEN_REQUEST = "CELL_OPEN_REQUEST";
+
 export default gameSlice.reducer;

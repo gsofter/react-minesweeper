@@ -16,6 +16,9 @@ import * as actions from "../reducers";
 
 const WS = createWebSocket();
 
+enum SocketMessageResponseType {
+  NEW_GAME = "new: OK",
+}
 // this function creates an event channel from a given socket
 // Setup subscription to incoming `ping` events
 function createSocketChannel(ws: WebSocket) {
@@ -60,6 +63,11 @@ function* websocketSaga(webSocket: WebSocket) {
     try {
       // An error from socketChannel will cause the saga jump to the catch block
       const payload = yield take(socketChannel);
+      if (payload.type === "onmessage") {
+        if (payload.data === SocketMessageResponseType.NEW_GAME) {
+          yield put(actions.startGame());
+        }
+      }
       console.log(payload);
     } catch (err) {
       console.error("socket error:", err);
@@ -70,13 +78,18 @@ function* websocketSaga(webSocket: WebSocket) {
   }
 }
 
+// eslint-disable-next-line require-yield
 function* startGame() {
   console.log("startGame saga");
-  yield call(WS.send, "new 1");
-  yield put(actions.startGame());
+  // yield call(WS.send, "new 1");
+  // yield call(WS, WS.send, ["new 1"]);
+  WS.send("new 1");
+  // yield put(actions.startGame());
 }
 
 export default function* rootSaga() {
-  yield all([websocketSaga(WS)]);
-  yield takeEvery(actions.startGame, startGame);
+  yield all([
+    websocketSaga(WS),
+    takeEvery(actions.GAME_START_REQUEST, startGame),
+  ]);
 }
