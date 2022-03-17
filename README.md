@@ -4,6 +4,8 @@ Simple Minesweeper Game to implement web socket connection with redux-saga [even
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+#### [DEMO](https://minesweeper-socket.netlify.app/)
+
 ## Main Tech stacks
 
 - React, Typescript
@@ -21,3 +23,5 @@ In the project directory, you can run:
 `yarn build`
 
 ### Screenshot
+
+![screenshot](screenshot.png)
