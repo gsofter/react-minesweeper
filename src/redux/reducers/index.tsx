@@ -5,6 +5,7 @@ export interface GameState {
   gameStarted: boolean;
   rowCount: number;
   colCount: number;
+  socketReady: boolean;
 }
 
 const initialState: GameState = {
@@ -12,6 +13,7 @@ const initialState: GameState = {
   gameStarted: false,
   rowCount: 10,
   colCount: 10,
+  socketReady: false,
 };
 
 const generateCells = () => {
@@ -30,6 +32,9 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
+    socketConnected: (state) => {
+      state.socketReady = true;
+    },
     startGame: (state) => {
       console.log("startGame");
       state.gameStarted = true;
@@ -38,8 +43,8 @@ export const gameSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { startGame } = gameSlice.actions;
+// Action creators are generate for each case reducer function
+export const { startGame, socketConnected } = gameSlice.actions;
 
 export const GAME_START_REQUEST = "GAME_START_REQUEST";
 export const CELL_OPEN_REQUEST = "CELL_OPEN_REQUEST";

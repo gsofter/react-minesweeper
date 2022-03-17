@@ -11,13 +11,12 @@ import {
   takeEvery,
 } from "redux-saga/effects";
 import { eventChannel } from "redux-saga";
-import { createWebSocket } from "../../utils/webSocket";
+import { createWebSocket, WS } from "../../utils/webSocket";
 import * as actions from "../reducers";
-
-const WS = createWebSocket();
 
 enum SocketMessageResponseType {
   NEW_GAME = "new: OK",
+  CELL_OPEN = "open: OK",
 }
 // this function creates an event channel from a given socket
 // Setup subscription to incoming `ping` events
@@ -63,9 +62,13 @@ function* websocketSaga(webSocket: WebSocket) {
     try {
       // An error from socketChannel will cause the saga jump to the catch block
       const payload = yield take(socketChannel);
-      if (payload.type === "onmessage") {
+      if (payload.type === "wsopen") {
+        yield put(actions.socketConnected());
+      } else if (payload.type === "onmessage") {
         if (payload.data === SocketMessageResponseType.NEW_GAME) {
           yield put(actions.startGame());
+        } else if (payload.data === SocketMessageResponseType.CELL_OPEN) {
+          // yield put(actions.openCell());
         }
       }
       console.log(payload);
@@ -78,18 +81,6 @@ function* websocketSaga(webSocket: WebSocket) {
   }
 }
 
-// eslint-disable-next-line require-yield
-function* startGame() {
-  console.log("startGame saga");
-  // yield call(WS.send, "new 1");
-  // yield call(WS, WS.send, ["new 1"]);
-  WS.send("new 1");
-  // yield put(actions.startGame());
-}
-
 export default function* rootSaga() {
-  yield all([
-    websocketSaga(WS),
-    takeEvery(actions.GAME_START_REQUEST, startGame),
-  ]);
+  yield all([websocketSaga(WS)]);
 }

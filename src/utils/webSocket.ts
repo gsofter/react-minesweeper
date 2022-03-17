@@ -3,3 +3,5 @@ export const createWebSocket = () => {
   const webSocket = new WebSocket(WEB_SOCKET_URL);
   return webSocket;
 };
+
+export const WS = createWebSocket();

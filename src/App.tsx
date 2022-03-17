@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 
 import CellButton from "./components/CellButton";
+import { WS } from "./utils/webSocket";
 
 import { RootState } from "./redux/store";
 import AppThemeProvider from "./theme";
@@ -18,6 +19,9 @@ import * as actions from "./redux/reducers";
 
 const App: React.FC = () => {
   const cells: string[][] = useSelector((state: RootState) => state.cells);
+  const socketReady: boolean = useSelector(
+    (state: RootState) => state.socketReady
+  );
   const dispatch = useDispatch();
 
   const cellClicked = (rowId: number, colId: number) => {
@@ -50,9 +54,8 @@ const App: React.FC = () => {
   };
 
   const handleStartGame = () => {
-    dispatch({
-      type: actions.GAME_START_REQUEST,
-    });
+    if (socketReady) WS.send("new 1");
+    else alert("Websocket Connection Not Ready!");
   };
 
   return (
